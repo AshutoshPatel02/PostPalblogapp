@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Blog</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-bold mb-4">Create Blog</h1>
+        <form id="blogForm" class="mb-4">
+            <input type="text" id="title" class="border rounded p-2 mr-2" placeholder="Enter title" required>
+            <textarea id="content" class="border rounded p-2 mr-2" placeholder="Enter content" required></textarea>
+            <input type="text" id="category" class="border rounded p-2 mr-2" placeholder="Enter category" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Create Blog</button>
+        </form>
+    </div>
+
+    <!-- Include Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const blogForm = document.getElementById('blogForm');
+
+        blogForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const category = document.getElementById('category').value;
+
+            try {
+                await axios.post('http://localhost:5000/blogs', {
+                    title,
+                    content,
+                    category
+                });
+                alert('Blog created successfully.');
+                window.location.href = "home.html";
+            } catch (error) {
+                console.error('Error creating blog:', error);
+            }
+        });
+    </script>
+</body>
+</html>

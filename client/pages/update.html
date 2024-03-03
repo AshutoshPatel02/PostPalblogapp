@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Blog</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.3/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mx-auto mt-8">
+        <h1 class="text-3xl font-bold mb-4">Update Blog</h1>
+        <form id="blogForm" class="mb-4">
+            <input type="text" id="title" class="border rounded p-2 mr-2" placeholder="Enter title" required>
+            <textarea id="content" class="border rounded p-2 mr-2" placeholder="Enter content" required></textarea>
+            <input type="text" id="category" class="border rounded p-2 mr-2" placeholder="Enter category" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update Blog</button>
+        </form>
+    </div>
+
+    <!-- Include Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        const blogForm = document.getElementById('blogForm');
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = parseInt(urlParams.get('id'));
+
+        blogForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const category = document.getElementById('category').value;
+
+            try {
+                await axios.put(`http://localhost:5000/blogs/${id}`, {
+                    title,
+                    content,
+                    category
+                });
+                alert('Blog updated successfully.');
+                window.location.href = "home.html";
+            } catch (error) {
+                console.error('Error updating blog:', error);
+            }
+        });
+
+        async function fetchBlog() {
+            try {
+                const response = await axios.get(`http://localhost:5000/blogs`);
+                const blog = response.data[id];
+                document.getElementById('title').value = blog.title;
+                document.getElementById('content').value = blog.content;
+                document.getElementById('category').value = blog.category;
+            } catch (error) {
+                console.error('Error fetching blog:', error);
+            }
+        }
+
+        fetchBlog();
+    </script>
+</body>
+</html>
